@@ -3,6 +3,6 @@
   command = "npm run build"
 
 [[redirects]]
-  from = "/*"
+  from = "/playtronica-midi/*"
   to = "/playtronica-midi/index.html"
   status = 200
