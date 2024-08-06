@@ -46,7 +46,7 @@ function App() {
   const playSound = (note) => {
     console.log(soundPack)
 
-    const audio = new Audio(`/playtronica-midi/sounds/${soundPack}/${note-36}.wav`);
+    const audio = new Audio(`/sounds/${soundPack}/${note-36}.wav`);
     audio.play().catch(error => {
       console.error(`Failed to play sound${note}.wav:`, error);
     });
@@ -67,7 +67,7 @@ function App() {
   return (
     <div className='app'>
       <header>
-        <img src="/playtronica-midi/logo.png" alt="Logo" className="logo" />
+        <img src="/logo.png" alt="Logo" className="logo" />
         <div className="soundpack-select-container">
           <select
             className="soundpack-select"

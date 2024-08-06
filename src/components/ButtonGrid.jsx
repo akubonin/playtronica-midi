@@ -9,7 +9,7 @@ const ButtonGrid = ({ onButtonClick, activeNotes, soundPack }) => {
 
   const playSound = (note) => {
 
-    const audio = new Audio(`/playtronica-midi/sounds/${soundPack}/${note-36}.wav`);
+    const audio = new Audio(`/sounds/${soundPack}/${note-36}.wav`);
     audio.play();
   };
 
