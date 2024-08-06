@@ -2,7 +2,4 @@
   publish = "dist"
   command = "npm run build"
 
-[[redirects]]
-  from = "/playtronica-midi/*"
-  to = "/playtronica-midi/index.html"
-  status = 200
+
