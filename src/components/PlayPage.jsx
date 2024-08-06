@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // src/App.jsx
 import React, { useEffect, useState } from 'react';
 import useMIDI from '../helpers/useMIDI';
