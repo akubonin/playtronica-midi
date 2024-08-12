@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router basename="/playtronica-midi">
+    <Router>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/play" element={<PlayPage />} />
