@@ -2,33 +2,26 @@
 /* eslint-disable react/prop-types */
 import React, {useState} from 'react';
 import './ButtonGrid.css';
+import playSound from '../helpers/playSound';
 
-const ButtonGrid = ({ onButtonClick, activeNotes, soundPack }) => {
-
-  const [activeButton, setActiveButton] = useState(null);
-
-  const playSound = (note) => {
-
-    const audio = new Audio(`/sounds/${soundPack}/${note-36}.wav`);
-    audio.play();
-  };
+const ButtonGrid = ({ activeNotes, addActiveNote, removeActiveNote, soundPack }) => {
 
   const handleClick = (note) => {
-    // setActiveButton(note); // Set the active button
-    playSound(note);
-    onButtonClick(note);
+    addActiveNote(note);
+    playSound(note, soundPack);
+    setTimeout(() => removeActiveNote(note), 500);
   };
 
 
   const buttons = [];
-  for (let i = 36; i <= 51; i++) {
+  for (let note = 36; note <= 51; note++) {
     buttons.push(
       <button
-        key={i}
-        className={`grid-button ${activeNotes.includes(i) || activeButton === i ? 'active' : ''}`}
-        onClick={() => handleClick(i)}
+        key={note}
+        className={`grid-button ${activeNotes.includes(note) ? 'active' : ''}`}
+        onClick={() => handleClick(note)}
       >
-        {i}
+        {/* {note} */}
       </button>
     );
   }

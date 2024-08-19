@@ -13,6 +13,11 @@
   outline: none;
 }
 
+.grid-button:focus {
+  outline: none;
+}
+
 .grid-button.active {
-  background-color: #ff0;
+  background-color: rgb(59, 164, 76);
+  outline: none;
 }

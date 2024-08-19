@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
-// src/App.jsx
 import React, { useEffect, useState } from 'react';
-import useMIDI from '../helpers/useMIDI';
 import ButtonGrid from './ButtonGrid';
-import './ButtonGrid.css'; // Import the CSS file
+import './PlayPage.css';
+import useMIDI from '../helpers/useMIDI';
+import playSound from '../helpers/playSound';
+import { SOUNDPACKS} from '../data/soundPacks';
 
 
-function App() {
-  const { inputs, outputs } = useMIDI();
+const PlayPage = () => {
+  const { inputs } = useMIDI();
   const [selectedInput, setSelectedInput] = useState(null);
   const [activeNotes, setActiveNotes] = useState([]);
   const [soundPack, setSoundPack] = useState('funky');
-
+  const [userSounds, setUserSounds] = useState({});
 
   useEffect(() => {
     if (inputs.length > 0 && !selectedInput) {
@@ -19,53 +20,39 @@ function App() {
       setSelectedInput(inputs[0]);
       console.log('Automatically selected input:', selectedInput);
     }
-  }, [inputs, selectedInput]);
+  }, [inputs]);
 
   useEffect(() => {
     if (selectedInput) {
       selectedInput.onmidimessage = handleMIDIMessage;
       console.log('Registered MIDI message handler for input:', selectedInput);
     }
-  }, [selectedInput, soundPack]);
+  }, [selectedInput]);
 
+  const addActiveNote = (note) => {
+    setActiveNotes((prevNotes) => [...prevNotes, note]);
+  }
 
-  const SOUNDPACKS = ['funky', 'omma', 'dati', 'emotions', 'cucumber'];
+  const removeActiveNote = (note) => {
+    setActiveNotes((prevNotes) => prevNotes.filter((n) => n !== note));
+  }
 
   const handleMIDIMessage = (message) => {
     console.log('MIDI message received:', message);
     const [command, note, velocity] = message.data;
     if (command === 144 && velocity > 0) {
-      setActiveNotes((prevNotes) => [...prevNotes, note]);
-      playSound(note);
+      addActiveNote(note);
+      playSound(note, soundPack, userSounds);
     } else if (command === 128 || (command === 144 && velocity === 0)) {
-      setActiveNotes((prevNotes) => prevNotes.filter((n) => n !== note));
+      removeActiveNote(note);
     }
     console.log(`Command: ${command}, Note: ${note}, Velocity: ${velocity}`);
   };
 
-  const playSound = (note) => {
-    console.log(soundPack)
-
-    const audio = new Audio(`/sounds/${soundPack}/${note-36}.wav`);
-    audio.play().catch(error => {
-      console.error(`Failed to play sound${note}.wav:`, error);
-    });
-  };
-
-  const handleButtonClick = (midiNumber) => {
-    if (selectedInput) {
-      const output = outputs[0]; // Assuming the first output is the desired one
-      if (output) {
-        output.send([144, midiNumber, 127]); // Note on
-        setTimeout(() => {
-          output.send([128, midiNumber, 0]); // Note off
-        }, 100);
-      }
-    }
-  };
 
   return (
     <div className='app'>
+
       <header>
         <img src="/logo.png" alt="Logo" className="logo" />
         <div className="soundpack-select-container">
@@ -82,15 +69,18 @@ function App() {
           </select>
         </div>
       </header>
+
       <main className="main">
-        <ButtonGrid onButtonClick={handleButtonClick} activeNotes={activeNotes} soundPack={soundPack} />
+        <ButtonGrid
+          activeNotes={activeNotes}
+          addActiveNote={addActiveNote}
+          removeActiveNote={removeActiveNote}
+          soundPack={soundPack}
+        />
       </main>
-      <div>
-        <h2>Choose soundpack</h2>
-      </div>
 
     </div>
   );
 }
 
-export default App;
+export default PlayPage;
