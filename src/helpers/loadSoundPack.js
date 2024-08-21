@@ -1,2 +1,0 @@
-const loadSoundPack = async (soundPack) => {
-};

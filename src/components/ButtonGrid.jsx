@@ -3,13 +3,19 @@
 import React, {useState} from 'react';
 import './ButtonGrid.css';
 import playSound from '../helpers/playSound';
+import { addActiveNote, removeActiveNote } from '../helpers/noteHelpers';
 
-const ButtonGrid = ({ activeNotes, addActiveNote, removeActiveNote, soundPack }) => {
+const ButtonGrid = ({ activeNotes, soundPack, setActiveNotes, userSounds, onRecord }) => {
+
 
   const handleClick = (note) => {
-    addActiveNote(note);
-    playSound(note, soundPack);
-    setTimeout(() => removeActiveNote(note), 500);
+    addActiveNote(note, setActiveNotes);
+    playSound(note, soundPack, userSounds);
+    setTimeout(() => removeActiveNote(note, setActiveNotes), 500);
+  };
+
+  const handleDoubleClick = (note) => {
+    onRecord(note);
   };
 
 
@@ -20,13 +26,18 @@ const ButtonGrid = ({ activeNotes, addActiveNote, removeActiveNote, soundPack })
         key={note}
         className={`grid-button ${activeNotes.includes(note) ? 'active' : ''}`}
         onClick={() => handleClick(note)}
+        onDoubleClick={() => handleDoubleClick(note)}
       >
         {/* {note} */}
       </button>
     );
   }
 
-  return <div className="button-grid">{buttons}</div>;
+  return (
+  <div>
+    <div className="button-grid">{buttons}</div>
+  </div>
+  )
 };
 
 export default ButtonGrid;
