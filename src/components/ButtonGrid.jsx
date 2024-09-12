@@ -5,18 +5,16 @@ import './ButtonGrid.css';
 import playSound from '../helpers/playSound';
 import { addActiveNote, removeActiveNote } from '../helpers/noteHelpers';
 
-const ButtonGrid = ({ activeNotes, soundPack, setActiveNotes, userSounds, onRecord }) => {
+const ButtonGrid = ({ activeNotes, soundPack, setActiveNotes, userSounds, setRecordingNote}) => {
 
 
   const handleClick = (note) => {
     addActiveNote(note, setActiveNotes);
     playSound(note, soundPack, userSounds);
+    setRecordingNote(note);
     setTimeout(() => removeActiveNote(note, setActiveNotes), 500);
   };
 
-  const handleDoubleClick = (note) => {
-    onRecord(note);
-  };
 
 
   const buttons = [];
@@ -26,18 +24,15 @@ const ButtonGrid = ({ activeNotes, soundPack, setActiveNotes, userSounds, onReco
         key={note}
         className={`grid-button ${activeNotes.includes(note) ? 'active' : ''}`}
         onClick={() => handleClick(note)}
-        onDoubleClick={() => handleDoubleClick(note)}
       >
-        {/* {note} */}
       </button>
     );
   }
 
   return (
-  <div>
     <div className="button-grid">{buttons}</div>
-  </div>
   )
+
 };
 
 export default ButtonGrid;

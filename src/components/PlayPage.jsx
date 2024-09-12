@@ -39,17 +39,21 @@ const PlayPage = () => {
 
   useMIDIHandler(selectedInput, handleMIDIMessage, userSounds);
 
-  const saveRecording = (note, audioBlob) => {
-    setUserSounds((prevSounds) => ({
-      ...prevSounds,
-      [note]: URL.createObjectURL(audioBlob),
-    }));
-    console.log('User sounds:', userSounds);
-  };
+  // const saveRecording = (note, audioBlob) => {
+  //   const audioUrl = URL.createObjectURL(audioBlob);
+  //   setUserSounds((prevSounds) => ({
+  //     ...prevSounds,
+  //     [note]: audioUrl,
+  //   }));
+  //   console.log('User sounds:', userSounds);
+  // };
 
-  const closeRecordSound = () => {
-    setRecordingNote(null);
-  };
+
+  // const closeRecordSound = () => {
+  //   setRecordingNote(null);
+  // };
+
+
 
   return (
     <div className='app'>
@@ -67,15 +71,17 @@ const PlayPage = () => {
           setActiveNotes={setActiveNotes}
           soundPack={soundPack}
           userSounds={userSounds}
-          onRecord={(note) => setRecordingNote(note)}
+          setRecordingNote={setRecordingNote}
         />
       </main>
 
       {recordingNote !== null && (
         <RecordSound
           note={recordingNote}
-          onClose={closeRecordSound}
-          saveRecording={saveRecording}
+          setRecordingNote={setRecordingNote}
+          setUserSounds={setUserSounds}
+          // onClose={closeRecordSound}
+          // saveRecording={saveRecording}
         />
       )}
     </div>

@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
+import './RecordSound.css';
 
-const RecordSound = ({ note, onClose, saveRecording }) => {
-  const [isRecording, setIsRecording] = useState(false);
+const RecordSound = ({ note, setRecordingNote, setUserSounds}) => {
   const [audioBlob, setAudioBlob] = useState(null);
+  const [recordingStatus, setRecordingStatus] = useState('idle'); // 'idle', 'recording', 'recorded'
+  const [fileName, setFileName] = useState(''); // State to store the uploaded file name
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
 
@@ -18,26 +20,109 @@ const RecordSound = ({ note, onClose, saveRecording }) => {
     mediaRecorderRef.current.onstop = () => {
       const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
       setAudioBlob(audioBlob);
-      saveRecording(note, audioBlob);  // Save the recording for the specific note
+      setRecordingStatus('recorded');
     };
 
     mediaRecorderRef.current.start();
-    setIsRecording(true);
+    setRecordingStatus('recording');
   };
 
   const stopRecording = () => {
     mediaRecorderRef.current.stop();
-    setIsRecording(false);
   };
+
+  const resetRecording = () => {
+    setAudioBlob(null);
+    setRecordingStatus('idle');
+  };
+
+  const restartRecording = () => {
+    resetRecording();
+    startRecording();
+  }
+
+  const saveRecording = (note, audioBlob) => {
+    const audioUrl = URL.createObjectURL(audioBlob);
+    setUserSounds((prevSounds) => ({
+      ...prevSounds,
+      [note]: audioUrl,
+    }));
+    setRecordingNote(null);
+  };
+
+  const onClose = () => {
+    setRecordingNote(null);
+  }
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setAudioBlob(file);
+      setFileName(file.name); // Set the file name to be displayed
+      setRecordingStatus('recorded');
+    }
+  };
+
 
   return (
     <div className="record-sound-modal">
-      <h3>Record Sound for Note {note}</h3>
-      <button onClick={isRecording ? stopRecording : startRecording}>
-        {isRecording ? 'Stop Recording' : 'Start Recording'}
-      </button>
-      {audioBlob && <audio controls src={URL.createObjectURL(audioBlob)} />}
-      <button onClick={onClose}>Close</button>
+      <h3>Input {note}</h3>
+
+      <label className="upload-button-label">
+        <span className="upload-button">Upload a sound</span>
+        <input
+          type="file"
+          accept="audio/*"
+          className="upload-input"
+          onChange={handleFileUpload}
+        />
+      </label>
+      {fileName && <p className="file-name">{fileName}</p>}
+
+      {recordingStatus === 'idle' && (
+        <div className="record-section">
+          <p>or</p>
+          <div
+            className="record-button"
+            onClick={startRecording}
+          >
+          </div>
+          <p>record new sound</p>
+          <button onClick={onClose}>Cancel</button>
+        </div>
+      )}
+
+      {recordingStatus === 'recording' && (
+        <div className="record-section">
+          <p>or</p>
+          <div
+            className="record-button recording"
+            onClick={stopRecording}
+          >
+            <div className="record-indicator"></div>
+          </div>
+          <p>Recording...</p>
+        </div>
+      )}
+
+      {recordingStatus === 'recorded' && (
+        <div className="record-section">
+          <p>or</p>
+          <div
+            className="record-button"
+            onClick={restartRecording}
+          >
+          </div>
+          <p>record new sound</p>
+          <audio controls src={URL.createObjectURL(audioBlob)} />
+          <div className="controls">
+            <button onClick={() => saveRecording(note, audioBlob)}>Save</button>
+            <button onClick={onClose}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 };

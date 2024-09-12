@@ -1,4 +1,5 @@
 const playSound = (note, soundPack, userSounds) => {
+  console.log('User sounds:', userSounds);
   if (userSounds[note]) {
     const audio = new Audio(userSounds[note]);
     audio.play().catch(error => {

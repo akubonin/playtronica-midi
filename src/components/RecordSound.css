@@ -1,0 +1,73 @@
+/* RecordSound.css */
+
+.record-sound-modal {
+  padding: 20px;
+  background-color: rgb(37, 14, 130);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.upload-button-label {
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.upload-input {
+  display: none;
+}
+
+.file-name {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+
+.record-section {
+  margin-top: 20px;
+}
+
+.record-button {
+  width: 60px;
+  height: 60px;
+  background-color: red;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.record-button.recording {
+  background-color: transparent;
+  border: 2px solid #999;
+}
+
+.record-indicator {
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.controls {
+  margin-top: 20px;
+}
+
+.controls button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
