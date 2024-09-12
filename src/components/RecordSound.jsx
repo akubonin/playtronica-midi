@@ -68,10 +68,10 @@ const RecordSound = ({ note, setRecordingNote, setUserSounds}) => {
 
   return (
     <div className="record-sound-modal">
-      <h3>Input {note}</h3>
+      <h4>Input {note}</h4>
 
       <label className="upload-button-label">
-        <span className="upload-button">Upload a sound</span>
+        <span className="upload-button">Upload a sound or..</span>
         <input
           type="file"
           accept="audio/*"
@@ -79,24 +79,30 @@ const RecordSound = ({ note, setRecordingNote, setUserSounds}) => {
           onChange={handleFileUpload}
         />
       </label>
+
       {fileName && <p className="file-name">{fileName}</p>}
 
       {recordingStatus === 'idle' && (
         <div className="record-section">
-          <p>or</p>
+          {/* <p>or</p> */}
+
           <div
             className="record-button"
             onClick={startRecording}
           >
           </div>
-          <p>record new sound</p>
-          <button onClick={onClose}>Cancel</button>
+
+          {/* <p>record new sound</p> */}
+
+          <div className="controls">
+            <button onClick={onClose}>Cancel</button>
+          </div>
         </div>
       )}
 
       {recordingStatus === 'recording' && (
         <div className="record-section">
-          <p>or</p>
+          {/* <p>or</p> */}
           <div
             className="record-button recording"
             onClick={stopRecording}
@@ -109,14 +115,16 @@ const RecordSound = ({ note, setRecordingNote, setUserSounds}) => {
 
       {recordingStatus === 'recorded' && (
         <div className="record-section">
-          <p>or</p>
+          {/* <p>or</p> */}
           <div
             className="record-button"
             onClick={restartRecording}
           >
           </div>
-          <p>record new sound</p>
-          <audio controls src={URL.createObjectURL(audioBlob)} />
+          {/* <p>record new sound</p> */}
+          <div>
+            <audio controls src={URL.createObjectURL(audioBlob)} />
+          </div>
           <div className="controls">
             <button onClick={() => saveRecording(note, audioBlob)}>Save</button>
             <button onClick={onClose}>Cancel</button>

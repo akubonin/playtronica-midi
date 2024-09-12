@@ -1,8 +1,8 @@
 .button-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  background-color: blueviolet;
+  gap: 8px;
+  /* background-color: blueviolet; */
 }
 
 .grid-button {
