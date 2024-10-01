@@ -25,6 +25,15 @@ const PlayPage = () => {
     }
   }, [inputs]);
 
+  useEffect(() => {
+    console.log('Sound pack changed:', soundPack);
+    for (let i = 1; i <= 16; i++) {
+      const audio = new Audio(`sounds/${soundPack}/${i}.wav`);
+      audio.load();
+      console.log(`Loaded sound ${i}`);
+    }
+  }, [soundPack]);
+
   const handleMIDIMessage = useCallback((message) => {
     console.log('MIDI message received:', message);
     const [command, note, velocity] = message.data;
