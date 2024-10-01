@@ -15,8 +15,6 @@ const ButtonGrid = ({ activeNotes, soundPack, setActiveNotes, userSounds, setRec
     setTimeout(() => removeActiveNote(note, setActiveNotes), 500);
   };
 
-
-
   const buttons = [];
   for (let note = 36; note <= 51; note++) {
     buttons.push(

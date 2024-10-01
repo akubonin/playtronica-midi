@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Header from './Header';
 import ButtonGrid from './ButtonGrid';
 import RecordSound from './RecordSound';
+import KeyboardHandler from './KeyboardHandler';
 import './PlayPage.css';
 import useMIDI from '../hooks/useMIDI';
 import useMIDIHandler from '../hooks/useMIDIHandler';
@@ -72,22 +73,6 @@ const PlayPage = () => {
 
   useMIDIHandler(selectedInput, handleMIDIMessage, userSounds);
 
-  // const saveRecording = (note, audioBlob) => {
-  //   const audioUrl = URL.createObjectURL(audioBlob);
-  //   setUserSounds((prevSounds) => ({
-  //     ...prevSounds,
-  //     [note]: audioUrl,
-  //   }));
-  //   console.log('User sounds:', userSounds);
-  // };
-
-
-  // const closeRecordSound = () => {
-  //   setRecordingNote(null);
-  // };
-
-
-
   return (
     <div className='app'>
 
@@ -102,13 +87,20 @@ const PlayPage = () => {
         {loading ? (
           <div className="spinner"></div> // Loading spinner while sounds are loading
         ) : (
-          <ButtonGrid
-            activeNotes={activeNotes}
-            setActiveNotes={setActiveNotes}
-            soundPack={soundPack}
-            userSounds={userSounds}
-            setRecordingNote={setRecordingNote}
-          />
+          <>
+            <ButtonGrid
+              activeNotes={activeNotes}
+              setActiveNotes={setActiveNotes}
+              soundPack={soundPack}
+              userSounds={userSounds}
+              setRecordingNote={setRecordingNote}
+            />
+            <KeyboardHandler
+              soundPack={soundPack}
+              userSounds={userSounds}
+              setActiveNotes={setActiveNotes}
+            />
+          </>
         )}
       </main>
 
