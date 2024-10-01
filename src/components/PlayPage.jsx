@@ -17,6 +17,8 @@ const PlayPage = () => {
   const [soundPack, setSoundPack] = useState('funky');
   const [userSounds, setUserSounds] = useState({});
   const [recordingNote, setRecordingNote] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadedCount, setLoadedCount] = useState(0);
 
   useEffect(() => {
     if (inputs.length > 0 && !selectedInput) {
@@ -26,13 +28,35 @@ const PlayPage = () => {
   }, [inputs]);
 
   useEffect(() => {
+    setLoading(true);
+    setLoadedCount(0);
     console.log('Sound pack changed:', soundPack);
-    for (let i = 1; i <= 16; i++) {
+
+    const totalSounds = 16;
+    let loaded = 0;
+
+    for (let i = 0; i < totalSounds; i++) {
       const audio = new Audio(`sounds/${soundPack}/${i}.wav`);
+
+      audio.onloadeddata = () => {
+        if (loaded < totalSounds) {
+          loaded += 1;
+          console.log(`Sound ${i} loaded. Total loaded: ${loaded}`);
+          setLoadedCount(loaded); // Update state based on local `loaded`
+        }
+      };
+
       audio.load();
-      console.log(`Loaded sound ${i}`);
     }
   }, [soundPack]);
+
+  // Hide the loading spinner when all sounds are loaded
+  useEffect(() => {
+    console.log(`Loaded count: ${loadedCount}`);
+    if (loadedCount === 16) {
+      setLoading(false);
+    }
+  }, [loadedCount]);
 
   const handleMIDIMessage = useCallback((message) => {
     console.log('MIDI message received:', message);
@@ -75,13 +99,17 @@ const PlayPage = () => {
       </header>
 
       <main className="main">
-        <ButtonGrid
-          activeNotes={activeNotes}
-          setActiveNotes={setActiveNotes}
-          soundPack={soundPack}
-          userSounds={userSounds}
-          setRecordingNote={setRecordingNote}
-        />
+        {loading ? (
+          <div className="spinner"></div> // Loading spinner while sounds are loading
+        ) : (
+          <ButtonGrid
+            activeNotes={activeNotes}
+            setActiveNotes={setActiveNotes}
+            soundPack={soundPack}
+            userSounds={userSounds}
+            setRecordingNote={setRecordingNote}
+          />
+        )}
       </main>
 
       {recordingNote !== null && (
