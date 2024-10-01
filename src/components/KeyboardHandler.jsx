@@ -24,6 +24,7 @@ const keyToNoteMap = {
 const KeyboardHandler = ({ soundPack, userSounds, setActiveNotes}) => {
   const handleKeyDown = useCallback(
     (event) => {
+      event.preventDefault();
       const note = keyToNoteMap[event.key.toLowerCase()];
       if (note) {
         addActiveNote(note, setActiveNotes);
@@ -39,7 +40,7 @@ const KeyboardHandler = ({ soundPack, userSounds, setActiveNotes}) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleKeyDown]);
+  }, [handleKeyDown, soundPack]);
 
   return null; // No visual component, just event handling
 };

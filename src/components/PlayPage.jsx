@@ -99,6 +99,7 @@ const PlayPage = () => {
               soundPack={soundPack}
               userSounds={userSounds}
               setActiveNotes={setActiveNotes}
+
             />
           </>
         )}
